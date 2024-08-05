@@ -38,7 +38,7 @@ export default function Home() {
     };
     const properties = [
       { facingMode: "environment" },
-      { fps: 10, qrbox: { width: 700, height: 700 }, aspectRatio: 1, videoConstraints: {advanced: [{zoom: 3.0}]} },
+      { fps: 10, qrbox: { width: 700, height: 700 }, aspectRatio: 1,},
       qrCodeSuccessCallback
     ];
     // console.log(html5Qrcode.getState())
