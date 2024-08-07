@@ -49,3 +49,12 @@ body {
   height: 100%;
   /* opacity: 0.5; */
 }
+.none {
+  display: none;
+}
+.active {
+  background-color: dodgerblue;
+  padding: 5px;
+  border: 1px solid;
+  color: #fff;
+}
