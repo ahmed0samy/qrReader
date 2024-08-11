@@ -32,9 +32,9 @@ export default function Home() {
   ]);
   let results = [];
   const [state, setstate] = useState(false);
-  const code = window.sessionStorage.getItem("temp-code");
   useEffect(() => {
     if (window) {
+      const code = window.sessionStorage.getItem("temp-code");
       if (code) {
         setScanResult((prev) => [...prev, {code, name: 'placeholder', count: 0,}]);
         results.push(code);
