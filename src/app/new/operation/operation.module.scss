@@ -1,48 +1,113 @@
 .container {
   padding: 5px;
+  .done {
+    background-color: var(--third);
+    width: 100%;
+    padding: 20px;
+    color: #fff;
+    border-radius: 12px;
+    margin: 0 20px;
+    left: -20px;
+    position: relative;
+  }
 }
 
-.row {
-  background-color: #ffa500;
-  // padding: 10px;
+
+.gridContainer {
   display: grid;
-  grid-template-columns: 1fr auto auto 25%;
-  align-items: center;
-  margin-bottom: 2px;
-  border-radius: 6px;
-  &:nth-child(even){
+  grid-template-columns: 1fr auto auto auto
+  // gap: 10px;
+}
+.row {
+  display: contents; 
+  &:nth-child(even) span{
     background-color: #ff7f00;
   }
   span {
-    padding: 10px 20px;
+    background-color: #ffa500;
+    padding: 0px 20px;
     word-break: keep-all;
     display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: auto;
     text-wrap: nowrap;
-    border: {
-      right: 2px solid #ffffff;
-      left: 2px solid #ffffff;
-    }
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    margin: 1px;           
     &:nth-child(1) {
-      border: none;
+      // border: none;
+      grid-column: 1;
+      justify-content: flex-start;
     }
     &:nth-child(2) {
-      width: 7ch;
       text-align: center;
+      grid-column: 2;
     }
     &:nth-child(3) {
-      border-left: none;
+      // grid-column: 3;
     }
     &:nth-child(4) {
-      border: none;
+      // border: none;
+      grid-column: 4;
     }
   }
-
+  &.fixed span{
+    background-color: darkcyan; 
+    color: #ffffff;
+    padding: 10px 20px;
+  }
+  
+}
+.spanfull {
+  grid-column: 1 / 5 !important;
+  background-color: darkblue !important;
+  color:#fff !important;
 }
 .reader {
   position: fixed;
   bottom: 0;
+  width: 50vw;
+  right: 50%;
+  transform: translateX(50%);
 }
+
+.empty {
+  text-align: center;
+  opacity: 0.5;
+  font-size: 30px;
+}
+
+
+.count {
+  button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+  div {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    text-wrap: nowrap;
+    position: relative;
+    // border: 2px solid #ffffff;
+    // border-radius: 8px;
+  }
+  input {
+    all: unset;
+    background-color: red;
+    width: 6ch;
+    text-align: center;
+
+  }
+}
+
 @media (min-width: 1024px) {
   .row {
     grid-template-columns: 1fr auto auto auto;

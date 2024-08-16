@@ -1,0 +1,22 @@
+body:has(.form) {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div:has(.form) {
+  .form {
+    display: grid;
+    grid-template-columns: auto;
+    // gap: 5px;
+    input {
+      padding: 5px 10px;
+      border-radius: 4px;
+      background-color: transparent;
+      border: 1px solid var(--darkBlue);
+      margin: 10px;
+    }
+  }
+}
