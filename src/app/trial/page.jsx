@@ -1,78 +1,55 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
-import { Html5Qrcode } from "html5-qrcode";
-import Tesseract from "tesseract.js";
-import styles from "./CameraOCR.module.scss";
+'use client'
+import { useEffect, useRef, useState } from 'react';
+import { BrowserMultiFormatReader } from '@zxing/library';
 
-export default function CameraOCR() {
-  const [text, setText] = useState("");
-  const [isScanning, setIsScanning] = useState(false);
-  const [camera, setCamera] = useState(null);
+const BarcodeReader = () => {
   const videoRef = useRef(null);
+  const [barcode, setBarcode] = useState('');
+  const codeReader = new BrowserMultiFormatReader();
 
   useEffect(() => {
-    const html5Qrcode = new Html5Qrcode("reader");
-
-    const startCamera = () => {
-      html5Qrcode.start(
-        { facingMode: "environment" },
-        {
-          fps: 10,
-          qrbox: 250,
-        },
-        (decodedText) => {
-          if (decodedText) {
-            processImage(decodedText);
-          }
-        },
-        (error) => {
-          console.error("Error scanning QR code:", error);
+    const startBarcodeScanner = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.setAttribute('playsinline', true); // Required to play video in iOS
+          videoRef.current.play();
         }
-      ).then((camera) => {
-        setCamera(camera);
-        setIsScanning(true);
-      }).catch((err) => {
-        console.error("Unable to start camera:", err);
-      });
-    };
 
-    const stopCamera = () => {
-      if (camera) {
-        camera.stop().then(() => {
-          setIsScanning(false);
-        }).catch((err) => {
-          console.error("Error stopping camera:", err);
+        // Continuously scan the video feed
+        codeReader.decodeFromVideoDevice(undefined, videoRef.current, (result, err) => {
+          if (result) {
+            setBarcode(result.getText());
+          }
         });
+      } catch (error) {
+        console.error('Error accessing the camera:', error);
       }
     };
 
-    startCamera();
+    startBarcodeScanner();
 
     return () => {
-      stopCamera();
+      codeReader.reset();
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+      }
     };
-  }, [camera]);
-
-  const processImage = async (imageUrl) => {
-    try {
-      const { data: { text } } = await Tesseract.recognize(
-        imageUrl,
-        'eng',
-        { logger: (info) => console.log(info) }
-      );
-      setText(text);
-    } catch (error) {
-      console.error("Error processing image:", error);
-    }
-  };
+  }, []);
 
   return (
-    <div className={styles.container}>
-      <div id="reader" className={styles.reader}></div>
-      <div className={styles.textContainer}>
-        <h2>Detected Text:</h2>
-        <p>{text}</p>
-      </div>
+    <div>
+      <h1>Fast Barcode Reader</h1>
+      <video ref={videoRef} style={{ width: '100%', height: 'auto' }} />
+      {barcode && (
+        <div>
+          <h2>Barcode Detected:</h2>
+          <p>{barcode}</p>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default BarcodeReader;

@@ -189,7 +189,6 @@ export default function Home() {
                   +
                 </button>
                 <div id="count">
-                  {/* <input type="number" value={e.count} /> */}
                   {e.count}
                 </div>
                 <button onClick={() => setScanResult(changeAmountof(e.code, "-1"))}>-</button>
