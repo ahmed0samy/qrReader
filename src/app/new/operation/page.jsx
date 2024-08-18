@@ -11,12 +11,12 @@ let results = [0];
 export default function Home() {
   const [total, setTotal] = useState(0);
 
-  const [audio] = useState(new Audio("/scanner-sound.mp3"));
-  const playSound = useCallback(() => {
-    audio.play().catch((error) => {
-      console.error("Error playing sound:", error);
-    });
-  }, [audio]);
+  // const [audio] = useState(new Audio("/scanner-sound.mp3"));
+  // const playSound = useCallback(() => {
+  //   audio.play().catch((error) => {
+  //     console.error("Error playing sound:", error);
+  //   });
+  // }, [audio]);
   function check(code) {
     const res = results[results.length - 1] != code;
     results.push(code);
@@ -71,6 +71,7 @@ export default function Home() {
   const [state, setstate] = useState(false);
   useEffect(() => {
     if (window) {
+      const successAudio = new Audio('/scanner-sound.mp3')
       const code = window.sessionStorage.getItem("temp-code");
       if (code) {
         qrCodeSuccessCallback(code);
@@ -87,7 +88,7 @@ export default function Home() {
             results[results.length - 1]
           );
           if (check(codeNo)) {
-            playSound();
+            successAudio.play();
             const productJSONDetails = await GetProductDetailsByCode(`${codeNo}`);
 
             if (productJSONDetails != "undefined") {
@@ -109,7 +110,7 @@ export default function Home() {
                 codeNo,
                 "does not exist in the database"
               );
-              playSound();
+              successAudio.play();
             }
           }
           // html5Qrcode.stop();
